@@ -5,17 +5,37 @@
  Source Server Type    : MySQL
  Source Server Version : 50724
  Source Host           : localhost:3306
- Source Schema         : marni
+ Source Schema         : gab
 
  Target Server Type    : MySQL
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 21/05/2022 14:06:17
+ Date: 12/06/2022 09:56:05
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for karyawan
+-- ----------------------------
+DROP TABLE IF EXISTS `karyawan`;
+CREATE TABLE `karyawan`  (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nik` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `nama` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `alamat` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
+  `telp` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of karyawan
+-- ----------------------------
+INSERT INTO `karyawan` VALUES (6, '2435466', 'Lilia', 'Jl komplek mandi angin', '32546564', '2022-06-12 01:02:28', '2022-06-12 01:02:28');
 
 -- ----------------------------
 -- Table structure for keranjang
@@ -28,7 +48,7 @@ CREATE TABLE `keranjang`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of keranjang
@@ -45,14 +65,15 @@ CREATE TABLE `paket`  (
   `harga` int(11) NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `rincian` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of paket
 -- ----------------------------
-INSERT INTO `paket` VALUES (1, 'Make Up', 'Make Up', 1500000, '2022-05-20 02:42:25', '2022-05-20 02:44:25');
-INSERT INTO `paket` VALUES (2, 'Gaun Pengantin', 'gaun', 2000000, '2022-05-21 03:55:39', '2022-05-21 03:55:39');
+INSERT INTO `paket` VALUES (1, 'Make Up', 'Make Up', 1500000, '2022-05-20 02:42:25', '2022-05-20 02:44:25', NULL);
+INSERT INTO `paket` VALUES (2, 'Gaun Pengantin', 'gaun', 2000000, '2022-05-21 03:55:39', '2022-05-21 03:55:39', NULL);
 
 -- ----------------------------
 -- Table structure for pelanggan
@@ -67,13 +88,12 @@ CREATE TABLE `pelanggan`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pelanggan
 -- ----------------------------
-INSERT INTO `pelanggan` VALUES (2, '45678901', 'udin1', 'jl pramuka1', '9876541', '2022-05-20 02:57:56', '2022-05-20 03:06:52');
-INSERT INTO `pelanggan` VALUES (3, '243566u7', 'utuh', 'jl kayu tangi', '098765', '2022-05-21 04:12:22', '2022-05-21 04:12:22');
+INSERT INTO `pelanggan` VALUES (6, '124354678', 'Susanti', 'jl pramuka', '0987656789', '2022-06-12 01:02:13', '2022-06-12 01:02:13');
 
 -- ----------------------------
 -- Table structure for pemesanan
@@ -92,14 +112,15 @@ CREATE TABLE `pemesanan`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `nota` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `bayar_sisa` int(11) UNSIGNED NULL DEFAULT 0,
+  `tempat` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
+  `karyawan_id` int(11) UNSIGNED NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pemesanan
 -- ----------------------------
-INSERT INTO `pemesanan` VALUES (13, 2, '2022-05-21', '2022-05-21', '2022-05-28', 1500000, 100000, 0, '2022-05-21 05:16:13', '2022-05-21 05:16:21', '0001', 1400000);
-INSERT INTO `pemesanan` VALUES (14, 3, '2022-05-21', '2022-05-21', '2022-05-28', 3500000, 500000, 3000000, '2022-05-21 06:02:33', '2022-05-21 06:02:33', '0002', 0);
+INSERT INTO `pemesanan` VALUES (18, 6, '2022-06-12', '2022-06-12', NULL, 1500000, NULL, 0, '2022-06-12 01:10:26', '2022-06-12 01:10:36', '0001', 1500000, 'gedung wanita', 6);
 
 -- ----------------------------
 -- Table structure for pemesanan_detail
@@ -114,15 +135,13 @@ CREATE TABLE `pemesanan_detail`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `pd_p`(`pemesanan_id`) USING BTREE,
-  CONSTRAINT `pd_p` FOREIGN KEY (`pemesanan_id`) REFERENCES `pemesanan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+  CONSTRAINT `pemesanan_detail_ibfk_1` FOREIGN KEY (`pemesanan_id`) REFERENCES `pemesanan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pemesanan_detail
 -- ----------------------------
-INSERT INTO `pemesanan_detail` VALUES (12, 13, 1, 1500000, '2022-05-21 05:16:13', '2022-05-21 05:16:13');
-INSERT INTO `pemesanan_detail` VALUES (13, 14, 2, 2000000, '2022-05-21 06:02:33', '2022-05-21 06:02:33');
-INSERT INTO `pemesanan_detail` VALUES (14, 14, 1, 1500000, '2022-05-21 06:02:33', '2022-05-21 06:02:33');
+INSERT INTO `pemesanan_detail` VALUES (22, 18, 1, 1500000, '2022-06-12 01:10:26', '2022-06-12 01:10:26');
 
 -- ----------------------------
 -- Table structure for role_users
@@ -181,6 +200,6 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'admin', NULL, 'admin', '2022-05-21 14:03:27', '$2y$10$EWvbqYJVXAtHOlyX/IR9bOQ7EvE2yQ05gBxZmiFX.BkUYiyo8XHtS', 'b97OOKi5zbtSZbnooSL9YOmDPgmF1vCWmA7OOfYrElqRIXivKCi42qJM9fuD', '2022-05-21 14:03:27', '2022-05-21 14:03:27');
+INSERT INTO `users` VALUES (1, 'admin', NULL, 'admin', '2022-06-12 09:13:29', '$2y$10$EWvbqYJVXAtHOlyX/IR9bOQ7EvE2yQ05gBxZmiFX.BkUYiyo8XHtS', '4sWbGW8gWN6z0d9c07n059MTcy5Q1iYf1FodNJM7BA3meEI1uIzslp4JJYxR', '2022-06-12 09:13:29', '2022-06-12 09:13:29');
 
 SET FOREIGN_KEY_CHECKS = 1;
