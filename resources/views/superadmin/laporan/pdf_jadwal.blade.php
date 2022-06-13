@@ -112,8 +112,8 @@
                     <td>{{$item->tempat}}</td>
                     <td>{{$item->pelanggan->nama}}</td>
                     <td>{{$item->pelanggan->telp}}</td>
-                    <td>{{$item->karyawan->nama}}</td>
-                    <td>{{$item->karyawan->telp}}</td>
+                    <td>{{$item->karyawan == null ? '-':$item->karyawan->nama}}</td>
+                    <td>{{$item->karyawan == null ? '-':$item->karyawan->telp}}</td>
                 </tr>
                 @endforeach
 
